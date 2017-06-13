@@ -1,3 +1,6 @@
+# Resources and license
+
+All the resources belongs to their authors, this project is not used for commercial purposes.
 
 # Project description
 
@@ -19,4 +22,4 @@ It uses the questions.js file to render the questions on the screen.
 - [ ] Retrieve questions from database in JSON format
 - [ ] Randomize questions order
 - [ ] Implement helpers: call a friend, 50-50 and ask the public options
-- [ ] Set levels of difficulty as the game advances closer to finish (star with easy questions, continue with medium level one and finish having to answer to difficult questions)
+- [ ] Set levels of difficulty as the game advances closer to finish (star with easy questions, continue with medium level ones and finish having to answer to difficult questions)
