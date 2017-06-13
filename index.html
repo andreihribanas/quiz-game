@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Quiz game</title>
+    <link rel="stylesheet" href="main.css">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+  </head>
+  <body>
+
+      <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <div class="col-md-10 offset-md-1">
+              <h1 class="display-2">Wanna be a millionaire?</h1>
+              <p class="lead text-center">It is simple. Just answer all questions correctly and you win!</p>
+            </div>
+        </div>
+      </div>
+
+      <div class="container">
+
+
+
+            <br>
+
+            <div class="row">
+              <div class="col-md-10">
+
+
+                    <div class="row">
+                        <div class="col-md-12 text-center" id="current_question"> What is the current question to be displayed?</div>
+                    </div>
+
+                    <br><br>
+
+                      <div id="test"></div>
+
+                  <br><br><br>
+
+                  <!-- Display current question number of total questions -->
+                  <h2 id="test_status" class="text-center"></h2>
+              </div>
+
+              <div class="col-md-2">
+                    <div id="score"></div>
+              </div>
+            </div>
+
+          <div class="col-md-12">
+
+          </div>
+
+      </div>
+
+      <!-- Bootstrap, jQuery and Tether -->
+      <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+      <!-- jQuery UI library -->
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+
+      <script src="questions.js" charset="utf-8"></script>
+      <script type="text/javascript">
+
+
+          var pos = 0; // current question number
+
+          var test, test_status, question, choice, choices, choiceA, choiceB, choiceC, choiceD, correct = 0;
+
+          // set random number to display quesitons
+          var r = Math.floor((Math.random() * 15) + 1);
+
+          // declare and initialise audio resources
+          var backgroundSound = new Audio('./sounds/background.mp3');
+          var correctSound = new Audio('./sounds/correct.mp3');
+          var wrongSound = new Audio('./sounds/wrong.mp3');
+
+          function _(x) {
+              return document.getElementById(x);
+          }
+
+          // display question in div container
+          function renderQuestion() {
+              test = _("test");
+              _("test_status").innerHTML = "Question " + (pos+1) + " of " + questions.length;
+
+              // Check if all questions were answered
+              if (pos >= questions.length){
+                test.innerHTML = "<h2> Congratulations, You have won the game. <br><br> All the answers were answered correctly. </h2>"
+                _("test_status").innerHTML = "Game over!";
+                _("current_question").innerHTML = '';
+
+                return false;
+              }
+
+              // Retrieve current question and choices
+              question = questions[pos][0];
+              choiceA = questions[pos][1];
+              choiceB = questions[pos][2];
+              choiceC = questions[pos][3];
+              choiceD = questions[pos][4];
+              correctAnswer = questions[pos][5];
+
+              // Render questions and answers to the div
+
+              _("current_question").innerHTML = question;
+
+              test.innerHTML = "<div class='col-md-5 answer'> <input type='radio' name='choices' value='A' onclick='enableSubmit()'> " + choiceA + "</div>";
+              test.innerHTML += "<div class='col-md-5 offset-md-1 answer'><input type='radio' name='choices' value='B' onclick='enableSubmit()'> " + choiceB + "</div>";
+              test.innerHTML += "<div class='col-md-5 answer'> <input type='radio' name='choices' value='C' onclick='enableSubmit()'> " + choiceC + "</div>";
+              test.innerHTML += "<div class='col-md-5 offset-md-1 answer'><input type='radio' name='choices' value='D' onclick='enableSubmit()'> " + choiceD + "</div>";
+              test.innerHTML += "<div class='col-md-6 offset-md-3'> <button onclick='checkAnswer()' id='btnSubmit' class='btn btn-lg btn-block btn-success' disabled> Submit answer </button> </div>";
+
+              // play baclground sound
+              backgroundSound.loop = true;
+              backgroundSound.play();
+          }
+
+          function enableSubmit() {
+              _("btnSubmit").disabled = false;
+          }
+
+          function renderScore() { // score, height
+
+              for (i = 1; i <= 15; i++){
+                  $("#score").html( $("#score").html() + "<div id=sc"+i+">" + i + "</div>" );
+              }
+          }
+
+          function checkAnswer() {
+              choices = document.getElementsByName("choices");
+              for (var i=0; i < choices.length; i++){
+                  if (choices[i].checked){
+                      choice = choices[i].value;
+                  }
+              }
+
+              if (choice == correctAnswer){
+                  correct++;
+
+                  for (i=1; i <=15; i++) {
+
+                      let currentScore = $("#sc"+i);
+                      if (correct == currentScore.html()) {
+                        currentScore.addClass('highlight');
+                      }
+                  }
+
+                  // Increment next question id
+                  pos++;
+
+                  // play correct sounds
+                  correctSound.play();
+
+                  $("#score").animate({height: $('#score').height() + correct*15 }, 1500, "swing", function() {
+                      backgroundSound.pause();
+                      renderQuestion();
+                  });
+
+                // flash
+                $("input[type='radio']:checked").closest('div').removeClass('answer').addClass('gre').effect("pulsate", { times:5 }, 1200);
+
+              } else {
+                  test.innerHTML = "<h2 class='text-center'> Sorry, you have lost. <br><br> You got " + correct +  " questions answered. </h2>"
+                  _("test_status").innerHTML = "Better luck next time!";
+                  _("current_question").innerHTML = '';
+
+                  // play wrong answer sound
+                  wrongSound.play();
+
+                  // reset score
+                  $("#score").html('');
+
+                  // stop background sound
+                  audio.pause();
+
+                  return false;
+              }
+
+          }
+
+          window.addEventListener("load", renderQuestion, false);
+          window.addEventListener("load", renderScore, false);
+
+
+      </script>
+
+  </body>
+
+
+</html>

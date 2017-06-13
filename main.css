@@ -1,0 +1,65 @@
+html {
+  color: white;
+}
+body {
+  background-image: url('./images/game_bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+  font-weight: bold;
+}
+
+#current_question {
+    padding: 5%;
+    font-size: 3rem;
+    color: white;
+}
+
+#test_status, #test {
+  color: white;
+}
+
+.answer  {
+    padding: 1%;
+    font-size: 2rem;
+    width: 50%;
+    border-radius: 5%;
+    margin: 3% 1%;
+    text-align: center;
+    display: inline-block;
+    color: white;
+
+    background: #36D1DC;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #5B86E5, #36D1DC);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #5B86E5, #36D1DC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.btn {
+  margin-top: 5%;
+}
+
+#score {
+  height: 1.2em;
+  line-height: 2.3;
+  color: white;
+}
+
+.highlight {
+    height: 2.5em;
+    background-color: green;
+    color: white;
+    text-align: center;
+    vertical-align:text-top;
+}
+
+.gre {
+  background-color: green;
+  padding: 1%;
+  font-size: 2rem;
+  width: 50%;
+  border-radius: 5%;
+  margin: 3% 1%;
+  text-align: center;
+  display: inline-block;
+  color: white;
+}
